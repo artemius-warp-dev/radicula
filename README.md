@@ -1,19 +1,32 @@
-# Radicula
+# radicula
 
-# Tests
+A take-home task on OTP and Redis: a pipeline that finds prime numbers in a
+stream of random integers.
 
-1. Run Docker Redis image
-```docker run -p 6379:6379 -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest```
-2. Run mix test
+- **Generators** — a supervisor runs several `GeneratorSrv` processes; each one
+  pushes a random number into a Redis list on every tick.
+- **Filtrator** — `FiltratorSrv` pops numbers from the list in batches
+  (`batch_size`, default 1000) on every tick and adds the primes to a Redis set.
+- `RedisSrv` owns the Redis connection (`exredis`).
 
-# Release
-1. MIX_ENV=prod mix release
-2. cd docker
-3. docker-compose up
+Ticks, batch size and Redis keys are set in `config/config.exs`.
 
-application starts up and filtering prime values
+## Tests
 
-# Ответы на вопросы
+```sh
+docker run -p 6379:6379 -e ALLOW_EMPTY_PASSWORD=yes bitnami/redis:latest
+mix test
+```
+
+## Release
+
+```sh
+MIX_ENV=prod mix release
+cd docker && docker-compose up
+```
+
+## Ответы на теоретические вопросы (RU)
+
 1. Происходит сравнение не только значения но и "типа". По другому можно сказать,
 что используя этот оператор, мы точно уверены что один терм равен другому.
 2. OTP - открытая телекомуникационная платформа нужна для шаблонизации и унификации решений.
