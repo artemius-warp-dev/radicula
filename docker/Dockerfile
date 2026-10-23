@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-MAINTAINER Artem Salagaev: gitsartem@gmail.com
+LABEL maintainer="Artem Salagaev <artem.salagaev.dev@gmail.com>"
 
 # prepare build dir
 WORKDIR /app
